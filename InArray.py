@@ -36,42 +36,21 @@ class InputArray:
                 Smatrix = SmatrixO.load()
                 WmatrixO = Image.new('1',self.size)
                 Wmatrix = WmatrixO.load()
-                DmatrixO = Image.new('1',self.size)
-                Dmatrix = DmatrixO.load()
                 for coord in self.coords:
-                        if self[coord[0],coord[1]+1]:
-                                if self[coord[0],coord[1]+1].currentval == self.matrix[coord].pastvals[0]:
-                                        Nmatrix[coord] = 1
-                                else:
-                                        Nmatrix[coord] = 0
-                        else:
-                                Nmatrix[coord] = 0
-                        if self[coord[0]+1,coord[1]]:
-                                if self[coord[0]+1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
-                                        Ematrix[coord] = 1
-                                else:
-                                        Ematrix[coord] = 0
-                        else:
-                                Ematrix[coord] = 0
-                        if self[coord[0],coord[1]-1]:
-                                if self[coord[0],coord[1]-1].currentval == self.matrix[coord].pastvals[0]:
-                                        Smatrix[coord] = 1
-                                else:
-                                        Smatrix[coord] = 0
-                        else:
-                                Smatrix[coord] = 0
-                        if self[coord[0]-1,coord[1]]:
-                                if self[coord[0]-1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
-                                        Wmatrix[coord] = 1
-                                else:
-                                        Wmatrix[coord] = 0
-                        else:
-                                Smatrix[coord] = 0
-                        if self[coord].currentval == self[coord].pastvals[0]:
-                                Dmatrix[coord] = 1
-                        else:
-                                Dmatrix[coord] = 0
-                return (NmatrixO,EmatrixO,SmatrixO,WmatrixO,DmatrixO)
+                        if self[coord].currentval != self[coord].pastvals[0]:
+                                if self[coord[0],coord[1]+1]:
+                                        if self[coord[0],coord[1]+1].currentval == self.matrix[coord].pastvals[0]:
+                                                Nmatrix[coord] = 1
+                                if self[coord[0]+1,coord[1]]:
+                                        if self[coord[0]+1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
+                                                Ematrix[coord] = 1
+                                if self[coord[0],coord[1]-1]:
+                                        if self[coord[0],coord[1]-1].currentval == self.matrix[coord].pastvals[0]:
+                                                Smatrix[coord] = 1
+                                if self[coord[0]-1,coord[1]]:
+                                        if self[coord[0]-1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
+                                                Wmatrix[coord] = 1
+                return (NmatrixO,EmatrixO,SmatrixO,WmatrixO)
 	
 class ArrayNode:
 	def __init__(self, array, memdepth=5, position=[0]): 

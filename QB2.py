@@ -15,7 +15,7 @@ def loadimage(imagelocation):
 
 
 print "Start"
-I = Image.open('QB2Input/1.bmp')
+I = Image.open('QB2Input/0000.bmp')
 print "Initialising Array:"
 A = InArray.InputArray(I.size, 1)
 Imagesize = I.size
@@ -27,8 +27,8 @@ print "     Pushing image into array"
 A.load(I)
 print "-----Init cycle complete-----"
 
-for X in range(1,9):#number of images in Input Folder
-    A.load(loadimage('QB2Input/{0}.bmp'.format(X)))
+for X in range(0,5):#number of images in Input Folder
+    A.load(loadimage('QB2Input/000{0}.bmp'.format(X)))
     print "Checking image motion status ({0})".format(X)
     O = A.checkstatus()
     print"Saving images"
