@@ -27,7 +27,7 @@ print "     Pushing image into array"
 A.load(I)
 print "-----Init cycle complete-----"
 
-for X in range(0,5):#number of images in Input Folder
+for X in range(0,10):#number of images in Input Folder
     A.load(loadimage('QB2Input/000{0}.bmp'.format(X)))
     print "Checking image motion status ({0})".format(X)
     O = A.checkstatus()
