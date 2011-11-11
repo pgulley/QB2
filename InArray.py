@@ -51,6 +51,14 @@ class InputArray:
                                         if self[coord[0]-1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
                                                 Wmatrix[coord] = 1
                 return (NmatrixO,EmatrixO,SmatrixO,WmatrixO)
+        #Now I need a function to pull out shapes from the image and add them to their own objects
+        #This probably involves using a floodfill type algorithm, but recursion is a pain.
+        #instead of changing the color of the pixel, we add it to a shape object.
+        #and continue untill the whole image is represented.
+        #THEN in each shape, add up the 'votes'  for each direction as in 'checkstatus'
+                
+
+
 	
 class ArrayNode:
 	def __init__(self, array, memdepth=5, position=[0]): 
@@ -88,3 +96,4 @@ def coords2(size):
                 for y in range(0,size[1]):
                         coordinates.append((x,y))
         return coordinates
+
