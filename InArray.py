@@ -28,34 +28,38 @@ class InputArray:
                         self.matrix[coord].updatevalue(data[coord])
                         
         def checkstatus(self):
-                NmatrixO = Image.new('1',self.size)
-                Nmatrix = NmatrixO.load()
-                EmatrixO = Image.new('1',self.size)
-                Ematrix = EmatrixO.load()
-                SmatrixO = Image.new('1',self.size)
-                Smatrix = SmatrixO.load()
-                WmatrixO = Image.new('1',self.size)
-                Wmatrix = WmatrixO.load()
+                shapes = []
                 for coord in self.coords:
-                        if self[coord].currentval != self[coord].pastvals[0]:
+                        if not self[coord].checked:
                                 if self[coord[0],coord[1]+1]:
                                         if self[coord[0],coord[1]+1].currentval == self.matrix[coord].pastvals[0]:
-                                                Nmatrix[coord] = 1
+                                                if self[coord[0],coord[1]+1].checked:
+                                                     self[coord[0],coord[1]+1].checked.points.append(coord)
+                                                     self[coord[0],coord[1]+1].checked.direction['N'] += 1
+                                                     self[coord].checked = self[coord[0],coord[1]+1].checked
                                 if self[coord[0]+1,coord[1]]:
                                         if self[coord[0]+1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
-                                                Ematrix[coord] = 1
+                                                if self[coord[0]+1,coord[1]].checked:
+                                                     self[coord[0]+1,coord[1]].checked.points.append(coord)
+                                                     self[coord[0]+1,coord[1]].checked.direction['E'] += 1
+                                                     self[coord].checked = self[coord[0]+1,coord[1]].checked
                                 if self[coord[0],coord[1]-1]:
-                                        if self[coord[0],coord[1]-1].currentval == self.matrix[coord].pastvals[0]:
-                                                Smatrix[coord] = 1
+                                        if self[coord[0],coord[1]-1].currentval == self.matrix[coord].pastvals[0]: 
+                                                if self[coord[0],coord[1]-1].checked:
+                                                     self[coord[0],coord[1]-1].checked.points.append(coord)
+                                                     self[coord[0],coord[1]-1].checked.direction['S'] += 1
+                                                     self[coord].checked = self[coord[0],coord[1]-1].checked
                                 if self[coord[0]-1,coord[1]]:
                                         if self[coord[0]-1,coord[1]].currentval == self.matrix[coord].pastvals[0]:
-                                                Wmatrix[coord] = 1
-                return (NmatrixO,EmatrixO,SmatrixO,WmatrixO)
-        #Now I need a function to pull out shapes from the image and add them to their own objects
-        #This probably involves using a floodfill type algorithm, but recursion is a pain.
-        #instead of changing the color of the pixel, we add it to a shape object.
-        #and continue untill the whole image is represented.
-        #THEN in each shape, add up the 'votes'  for each direction as in 'checkstatus'
+                                                if self[coord[0]-1,coord[1]].checked:
+                                                     self[coord[0]-1,coord[1]].checked.points.append(coord)
+                                                     self[coord[0]-1,coord[1]].checked.direction['W'] += 1
+                                                     self[coord].checked = self[coord[0]-1,coord[1]].checked
+
+				if not self[coord].checked:
+					self[coord].checked = Shape()
+					shapes.append(self[coord].checked)
+                return (shapes)
                 
 
 
@@ -70,6 +74,7 @@ class ArrayNode:
 		self.position = position
 		self.parent = array
 		self.status = [0,0,0,0,0] #N,E,S,W,Self
+                self.checked = 0
 
 	def __repr__(self):
 		return '<{0}>'.format(self.currentval)
@@ -85,9 +90,16 @@ class ArrayNode:
 		self.pastvals.reverse() 
 		self.pastvals.append(self.currentval)
 		self.currentval = newval
+                self.checked = 0
 		if len(self.pastvals) >= self.valdepth:
 			self.pastvals = self.pastvals[1:]
 		self.pastvals.reverse()
+
+class Shape:
+	def __init__(self):
+		self.points = []
+                self.direction = {"N":0,"E":0,"S":0,"W":0}
+
 
 
 def coords2(size):
